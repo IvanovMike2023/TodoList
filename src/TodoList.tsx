@@ -1,45 +1,38 @@
 import React, {FC} from "react";
+import {FilterText} from "./App";
 
  type PropsTasks = {
     taskId: number,
     title: string,
     isDone: boolean
 }
- type PropsStudents = {
-}
+
  export interface PropsData {
     title: string,
     tasks: PropsTasks[],
-     students: PropsStudents[]
+     remove: (n:FilterText)=>void
 
  }
 
-type PropsType = {
-    data: PropsData
 
-}
-const TodoList: FC<PropsType> = (props) => {
-//const TodoList=(props:PropsType)=>{
-    //const tasks=props.data.tasks
+const TodoList: FC<PropsData> = (props) => {
 
-    const data=props.data
-    console.log(data)
     return (
         <div className="todolist">
-            <h3>{data.title}</h3>
+            <h3>{props.title}</h3>
             <div>
                 <input/>
                 <button>+</button>
             </div>
             <ul>
-                <li><input type="checkbox" checked={data.tasks[0].isDone}/> <span>{data.tasks[0].title}</span></li>
-                <li><input type="checkbox" checked={data.tasks[1].isDone}/> <span>{data.tasks[1].title}</span></li>
-                <li><input type="checkbox" checked={data.tasks[2].isDone}/> <span>{data.tasks[2].title}</span></li>
+                {props.tasks.map(m=><li key={m.taskId}><input type="checkbox" checked={m.isDone}/>
+                    <span>{m.title}</span></li>
+                )}
             </ul>
             <div>
-                <button>All</button>
-                <button>Active</button>
-                <button>Completed</button>
+                <button onClick={()=>props.remove('All')}>All</button>
+                <button onClick={()=>props.remove('Active')}>Active</button>
+                <button onClick={()=>props.remove('Completed')}>Completed</button>
             </div>
         </div>
     )
