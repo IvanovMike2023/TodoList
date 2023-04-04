@@ -16,25 +16,26 @@ function App() {
         {taskId: 7, title: "JS2", isDone: true}
     ])
     let [filter, Setfilter] = useState<FilterText>('Active')
-const ChangeFilter=(newfilter:FilterText)=>{
+
+    const ChangeFilter = (newfilter: FilterText) => {
         Setfilter(newfilter)
-}
-const getTasks=(tasks:Task[],newfilter:FilterText)=>{
-        switch (newfilter){
+    }
+    const getTasks = (tasks: Task[], newfilter: FilterText) => {
+        switch (newfilter) {
             case "Active":
-                return task.filter(t=>t.isDone!==false)
+                return task.filter(t => t.isDone !== false)
 
             case "Completed":
-                return task.filter(t=>t.isDone!==true)
+                return task.filter(t => t.isDone !== true)
 
             default:
                 return task
         }
-}
+    }
 
     return (
         <div className="App">
-            <TodoList ChangeFilter={ChangeFilter} title={TodoTitle} tasks={getTasks(task,filter)} />
+            <TodoList ChangeFilter={ChangeFilter} title={TodoTitle} tasks={getTasks(task, filter)}/>
 
         </div>
     );
