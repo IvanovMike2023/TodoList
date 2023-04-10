@@ -1,32 +1,41 @@
 import React, {useState} from 'react';
 import './App.css';
-import TodoList, {Task} from "./TodoList";
+import TodoList, { TaskType} from "./TodoList";
+import {v1} from "uuid";
 
 export type FilterText = 'All' | 'Completed' | 'Active'
 
 function App() {
     const TodoTitle: string = "What to do"
     let [task, SetTask] = useState([
-        {taskId: 1, title: "HTML&CSS2", isDone: true},
-        {taskId: 2, title: "JS2", isDone: false},
-        {taskId: 3, title: "JS2", isDone: true},
-        {taskId: 4, title: "JS2", isDone: true},
-        {taskId: 5, title: "JS2", isDone: true},
-        {taskId: 6, title: "JS2", isDone: true},
-        {taskId: 7, title: "JS2", isDone: true}
+        {taskId: v1(), title: "HTML&CSS2", isDone: true},
+        {taskId: v1(), title: "JS2", isDone: false},
+        {taskId: v1(), title: "JS2", isDone: true},
+        {taskId: v1(), title: "JS2", isDone: true},
+        {taskId: v1(), title: "JS2", isDone: true},
+        {taskId: v1(), title: "JS2", isDone: true},
+        {taskId: v1(), title: "JS2", isDone: true}
     ])
-    let [filter, Setfilter] = useState<FilterText>('Active')
-
+    let [filter, Setfilter] = useState<FilterText>('All')
+    const AddTasks = (title: string) => {
+        let newTask: TaskType= {
+            taskId: v1(),
+            title: title,
+            isDone: false
+        }
+        let newTasks = [newTask, ...task]
+        SetTask(newTasks)
+    }
     const ChangeFilter = (newfilter: FilterText) => {
         Setfilter(newfilter)
     }
-    const getTasks = (tasks: Task[], newfilter: FilterText) => {
+    const getTasks = (tasks: TaskType[], newfilter: FilterText) => {
         switch (newfilter) {
             case "Active":
-                return task.filter(t => t.isDone !== false)
+                return task.filter(t => !t.isDone )
 
             case "Completed":
-                return task.filter(t => t.isDone !== true)
+                return task.filter(t => !t.isDone )
 
             default:
                 return task
@@ -35,7 +44,7 @@ function App() {
 
     return (
         <div className="App">
-            <TodoList ChangeFilter={ChangeFilter} title={TodoTitle} tasks={getTasks(task, filter)}/>
+            <TodoList ChangeFilter={ChangeFilter} title={TodoTitle} tasks={getTasks(task, filter)} AddTasks={AddTasks}/>
 
         </div>
     );
