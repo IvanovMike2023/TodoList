@@ -6,51 +6,77 @@ export type TaskType = {
     title: string,
     isDone: boolean
 }
+
 export interface TodoPropsType {
     title: string,
     tasks: TaskType[],
+    filter: string,
     ChangeFilter: (name: FilterText) => void,
     AddTasks: (title: string) => void
+    changeTaskStatus: (taskid: string, newIsDone: boolean) => void
+    removeTask:(id:string)=>void
 }
+
 const TodoList: FC<TodoPropsType> = (props) => {
     const TasksJSX: Array<JSX.Element> = props.tasks.map((m: TaskType) => {
-
+        const SetchangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
+            props.changeTaskStatus(m.taskId, e.currentTarget.checked)
+        }
+        const setremoveTask=()=>{
+            props.removeTask(m.taskId)
+        }
         return (
-            <li key={m.taskId}><input type="checkbox" checked={m.isDone}/>
-                <span>{m.title}</span></li>
+            <li className={'task-list'} key={m.taskId}><input onChange={SetchangeTaskStatus} type="checkbox" checked={m.isDone}/>
+                <span>{m.title}</span><button onClick={setremoveTask}>x</button></li>
         )
     })
-    let [titleTasks, settitleTasks] = useState('')
-    const setTitleHandler = (e: ChangeEvent<HTMLInputElement>) => settitleTasks(e.currentTarget.value)
-    const addTaskHandler = ()=> {
-        props.AddTasks(titleTasks)
+    const [titleTasks, settitleTasks] = useState('')
+    const [error, setError] = useState<boolean>(false)
+    const setTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        settitleTasks(e.currentTarget.value)
+    setError(false)
+    }
+    const addTaskHandler = () => {
+        const trimmedtitle=titleTasks.trim()
+        if(trimmedtitle){
+            props.AddTasks(titleTasks)
+        }
+        else {
+            setError(true)
+        }
         settitleTasks('')
     }
 
-    const handlerCreator=(filter:FilterText)=>()=> props.ChangeFilter(filter)
+    const handlerCreator = (filter: FilterText) => () => props.ChangeFilter(filter)
     const titleMaxLength = 25
-    const isAddBtnDisabled: boolean = !titleTasks.length  || titleTasks.length > titleMaxLength
+    const isAddBtnDisabled: boolean = !titleTasks.length || titleTasks.length > titleMaxLength
     const isTitleLengthTooLong: boolean = titleTasks.length > titleMaxLength
-    const addTaskonKeyHandler=(e:KeyboardEvent<HTMLInputElement>)=>{e.key ==='Enter' && !isAddBtnDisabled && addTaskHandler()  }
+    const addTaskonKeyHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        e.key === 'Enter' && !isAddBtnDisabled && addTaskHandler()
+    }
     const titleMaxLengthWarning = isTitleLengthTooLong
         ? <div style={{color: 'red'}}>Title is to long</div>
         : null
+    const usermessage =error?
+        <div style={{color: 'red'}}>Title is strong reqwired</div>
+        :null
     return (
         <div className="todolist">
-            <h3>{props.title}</h3>
+            <h3 className={'title-todolist'}>{props.title}</h3>
             <div>
-                <input onChange={setTitleHandler} value={titleTasks} onKeyDown={addTaskonKeyHandler}/>
+                <input onChange={setTitleHandler} value={titleTasks} onKeyDown={addTaskonKeyHandler} className={isTitleLengthTooLong || error ? 'error-input':''}/>
                 <button disabled={isAddBtnDisabled} onClick={addTaskHandler}>+
                 </button>
-                {titleMaxLengthWarning}
+                {titleMaxLengthWarning || usermessage}
+
             </div>
             <ul>
                 {TasksJSX}
             </ul>
-            <div>
-                <button onClick={handlerCreator('All')}>All</button>
-                <button onClick={handlerCreator('Active')}>Active</button>
-                <button onClick={handlerCreator('Completed')}>Completed</button>
+            <div className={'filter-btn-wrapper'}>
+                <button className={props.filter==='All' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator('All')}>All</button>
+                <button className={props.filter==='Active' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator('Active')}>Active</button>
+                <button  className={props.filter==='Completed' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator('Completed')}>Completed</button>
             </div>
         </div>
     )

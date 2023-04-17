@@ -9,5 +9,26 @@
 .todolist{
   border: 2px solid cadetblue;
   background-color: darkolivegreen;
-  border-radius: 25%;
+  border-radius: 2%;
+}
+.title-todolist{
+  text-align: center;
+}
+.filter-btn-active{
+  background-color: gold;
+  color: black;
+}
+.filter-btn{
+  background-color: white;
+}
+.filter-btn-wrapper{
+  display: flex;
+  justify-content: space-between;
+}
+.task-list{
+  list-style: none;
+}
+.error-input{
+  border: 2px red solid;
+  outline: none;
 }
