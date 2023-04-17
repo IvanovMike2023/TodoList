@@ -52,5 +52,4 @@ const removeTask=(Id:string)=>{
         </div>
     );
 }
-
 export default App;
