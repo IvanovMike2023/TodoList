@@ -77,7 +77,7 @@ const TodoList: FC<TodoPropsType> = (props) => {
                 <button className={props.filter==='All' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator('All')}>All</button>
                 <button className={props.filter==='Active' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator('Active')}>Active</button>
                 <button  className={props.filter==='Completed' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator('Completed')}>Completed</button>
-            </div>yyyyyyyyyyyyyy
+            </div>
         </div>
     )
 }
