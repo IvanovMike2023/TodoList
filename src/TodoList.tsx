@@ -27,7 +27,7 @@ const TodoList: FC<TodoPropsType> = (props) => {
         }
         return (
             <li className={'task-list'} key={m.taskId}><input onChange={SetchangeTaskStatus} type="checkbox" checked={m.isDone}/>
-                <span>{m.title}</span><button onClick={setremoveTask}>x</button></li>
+                <span className={m.isDone?'title-span-isDone': ''}>{m.title}</span><button className={'btn-task-list'} onClick={setremoveTask}>x</button></li>
         )
     })
     const [titleTasks, settitleTasks] = useState('')

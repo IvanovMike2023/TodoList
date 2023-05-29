@@ -23,12 +23,24 @@
 }
 .filter-btn-wrapper{
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
+  padding: 0 20px 20px 20px ;
 }
 .task-list{
   list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+.btn-task-list{
+
 }
 .error-input{
   border: 2px red solid;
   outline: none;
+}
+.title-span-isDone{
+  text-decoration: line-through;
+}
+ul{
+  padding: 10px;
 }

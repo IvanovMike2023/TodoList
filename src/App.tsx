@@ -46,8 +46,6 @@ const removeTask=(Id:string)=>{
                 return tasks
         }
 
-
-
     }
     return (
         <div className="App">
