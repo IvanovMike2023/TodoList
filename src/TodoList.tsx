@@ -8,22 +8,24 @@ export type TaskType = {
 }
 
 export interface TodoPropsType {
-    title: string,
-    tasks: TaskType[],
-    filter: string,
-    ChangeFilter: (name: FilterText) => void,
-    AddTasks: (title: string) => void
-    changeTaskStatus: (taskid: string, newIsDone: boolean) => void
-    removeTask:(id:string)=>void
+    title: string
+    tasks: TaskType[]
+    todolistId:string
+    filter: string
+    removeTodoList:(todolistId:string)=>void
+    ChangeFilter: (todolistId:string,name: FilterText) => void
+    AddTasks: (todolistId: string,title: string) => void
+    changeTaskStatus: (todolistId:string,taskid: string, newIsDone: boolean) => void
+    removeTask:(todolistId:string,id:string)=>void
 }
 
 const TodoList: FC<TodoPropsType> = (props) => {
     const TasksJSX: Array<JSX.Element> = props.tasks.map((m: TaskType) => {
         const SetchangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-            props.changeTaskStatus(m.taskId, e.currentTarget.checked)
+            props.changeTaskStatus(props.todolistId,m.taskId, e.currentTarget.checked)
         }
         const setremoveTask=()=>{
-            props.removeTask(m.taskId)
+            props.removeTask(props.todolistId,m.taskId)
         }
         return (
             <li className={'task-list'} key={m.taskId}><input onChange={SetchangeTaskStatus} type="checkbox" checked={m.isDone}/>
@@ -39,7 +41,7 @@ const TodoList: FC<TodoPropsType> = (props) => {
     const addTaskHandler = () => {
         const trimmedtitle=titleTasks.trim()
         if(trimmedtitle){
-            props.AddTasks(titleTasks)
+            props.AddTasks(props.todolistId,titleTasks)
         }
         else {
             setError(true)
@@ -47,7 +49,7 @@ const TodoList: FC<TodoPropsType> = (props) => {
         settitleTasks('')
     }
 
-    const handlerCreator = (filter: FilterText) => () => props.ChangeFilter(filter)
+    const handlerCreator = (todolistId:string,filter: FilterText) => () => props.ChangeFilter(todolistId,filter)
     const titleMaxLength = 25
     const isAddBtnDisabled: boolean = !titleTasks.length || titleTasks.length > titleMaxLength
     const isTitleLengthTooLong: boolean = titleTasks.length > titleMaxLength
@@ -60,9 +62,13 @@ const TodoList: FC<TodoPropsType> = (props) => {
     const usermessage =error?
         <div style={{color: 'red'}}>Title is strong reqwired</div>
         :null
+    const removeTodoListHandler=()=>{
+        props.removeTodoList(props.todolistId)
+    }
     return (
         <div className="todolist">
-            <h3 className={'title-todolist'}>{props.title}</h3>
+            <h3 className={'title-todolist'}>{props.title}<button onClick={removeTodoListHandler}>x</button></h3>
+
             <div>
                 <input onChange={setTitleHandler} value={titleTasks} onKeyDown={addTaskonKeyHandler} className={isTitleLengthTooLong || error ? 'error-input':''}/>
                 <button disabled={isAddBtnDisabled} onClick={addTaskHandler}>+
@@ -74,9 +80,9 @@ const TodoList: FC<TodoPropsType> = (props) => {
                 {TasksJSX}
             </ul>
             <div className={'filter-btn-wrapper'}>
-                <button className={props.filter==='All' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator('All')}>All</button>
-                <button className={props.filter==='Active' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator('Active')}>Active</button>
-                <button  className={props.filter==='Completed' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator('Completed')}>Completed</button>
+                <button className={props.filter==='All' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator(props.todolistId,'All')}>All</button>
+                <button className={props.filter==='Active' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator(props.todolistId,'Active')}>Active</button>
+                <button  className={props.filter==='Completed' ? 'filter-btn-active': 'filter-btn'} onClick={handlerCreator(props.todolistId,'Completed')}>Completed</button>
             </div>
         </div>
     )
