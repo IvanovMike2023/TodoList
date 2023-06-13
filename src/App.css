@@ -1,46 +1,46 @@
-.App {
-  padding: 30px;
-  display: flex;
-}
+/*.App {*/
+/*  padding: 30px;*/
+/*  display: flex;*/
+/*}*/
 
-.App > div {
-  margin-right: 50px;
-}
-.todolist{
-  border: 2px solid cadetblue;
-  background-color: darkolivegreen;
-  border-radius: 2%;
-}
-.title-todolist{
-  text-align: center;
-}
-.filter-btn-active{
-  background-color: gold;
-  color: black;
-}
-.filter-btn{
-  background-color: white;
-}
-.filter-btn-wrapper{
-  display: flex;
-  justify-content: start;
-  padding: 0 20px 20px 20px ;
-}
+/*.App > div {*/
+/*  margin-right: 50px;*/
+/*}*/
+/*.todolist{*/
+/*  border: 2px solid cadetblue;*/
+
+/*  border-radius: 2%;*/
+/*}*/
+/*.title-todolist{*/
+/*  text-align: center;*/
+/*}*/
+/*.filter-btn-active{*/
+/*  background-color: gold;*/
+/*  color: black;*/
+/*}*/
+/*.filter-btn{*/
+/*  background-color: white;*/
+/*}*/
+/*.filter-btn-wrapper{*/
+/*  display: flex;*/
+/*  justify-content: start;*/
+/*  padding: 0 20px 20px 20px ;*/
+/*}*/
 .task-list{
   list-style: none;
   display: flex;
   justify-content: space-between;
 }
-.btn-task-list{
+/*.btn-task-list{*/
 
-}
-.error-input{
-  border: 2px red solid;
-  outline: none;
-}
-.title-span-isDone{
-  text-decoration: line-through;
-}
-ul{
-  padding: 10px;
-}
+/*}*/
+/*.error-input{*/
+/*  border: 2px red solid;*/
+/*  outline: none;*/
+/*}*/
+/*.title-span-isDone{*/
+/*  text-decoration: line-through;*/
+/*}*/
+/*ul{*/
+/*  padding: 10px;*/
+/*}*/
