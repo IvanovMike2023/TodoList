@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC} from "react";
+import React, {ChangeEvent, FC, memo} from "react";
 import {FilterText} from "./App";
 import {AddItem} from "./AddItem";
 import {EditingSpan} from "./EditingSpan";
@@ -26,8 +26,14 @@ export interface TodoPropsType {
     onChangeTitleTodoList: (todolistId: string, title: string) => void
 }
 
-const TodoList: FC<TodoPropsType> = (props) => {
+const TodoList= memo((props: TodoPropsType) => {
+    let tasks = props.tasks
+    if (props.filter === 'Active')
+        tasks = props.tasks.filter(t => !t.isDone)
+    if (props.filter === 'Completed')
+        tasks = props.tasks.filter(t => t.isDone)
     const TasksJSX: Array<JSX.Element> = props.tasks.map((m: TaskType) => {
+
         const SetchangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
             props.changeTaskStatus(props.todolistId, m.taskId, e.currentTarget.checked)
         }
@@ -52,7 +58,9 @@ const TodoList: FC<TodoPropsType> = (props) => {
             </li>
         )
     })
-    const handlerCreator = (todolistId: string, filter: FilterText) => () => props.ChangeFilter(todolistId, filter)
+    const handlerCreator = (todolistId: string, filter: FilterText) => () => {
+        props.ChangeFilter(todolistId, filter)
+    }
     const removeTodoListHandler = () => {
         props.removeTodoList(props.todolistId)
     }
@@ -88,7 +96,7 @@ const TodoList: FC<TodoPropsType> = (props) => {
             </div>
         </div>
     )
-}
+})
 export default TodoList
 
 

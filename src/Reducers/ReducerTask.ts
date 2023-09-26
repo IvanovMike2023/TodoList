@@ -1,7 +1,7 @@
 import {AssocTaskType, TodoListType} from "../App";
 import {v1} from "uuid";
-
-export const ReducerTask = (state: AssocTaskType, action: TsarType): AssocTaskType => {
+const initialstate:AssocTaskType={}
+export const ReducerTask = (state: AssocTaskType=initialstate, action: TsarType): AssocTaskType => {
     switch (action.type) {
         case 'REMOVE-TASK':
             return {
