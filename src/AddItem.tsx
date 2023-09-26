@@ -1,20 +1,17 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import {Button} from "@mui/material";
 import TextField from '@mui/material/TextField';
 type AddItemType = {
     AddTodoLists: (title: string) => void
-    todolistId: string
-
-
 }
-export const AddItem = (props: AddItemType) => {
-    //const
+
+export const AddItem = memo((props: AddItemType) => {
     const setTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         settitleTasks(e.currentTarget.value)
         setError('')
     }
     const [titleTasks, settitleTasks] = useState('')
-    const [error, setError] = useState<string>('')
+    const [error, setError] = useState<string | null>('')
     const titleMaxLength = 15
     const addTaskonKeyHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         e.key === 'Enter' && !isAddBtnDisabled && addTaskHandler()
@@ -62,4 +59,4 @@ export const AddItem = (props: AddItemType) => {
         {titleMaxLengthWarning || usermessage}
 
     </div>
-}
+})

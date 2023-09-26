@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC} from "react";
+import React, {ChangeEvent, FC, memo, useCallback} from "react";
 import {FilterText} from "./App";
 import {AddItem} from "./AddItem";
 import {EditingSpan} from "./EditingSpan";
@@ -6,6 +6,10 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox'
+import Task from "./Task";
+import TaskWithReduax from "./TaskWithReduax";
+import {useSelector} from "react-redux";
+
 export type TaskType = {
     taskId: string,
     title: string,
@@ -26,43 +30,48 @@ export interface TodoPropsType {
     onChangeTitleTodoList: (todolistId: string, title: string) => void
 }
 
-const TodoList: FC<TodoPropsType> = (props) => {
-    const TasksJSX: Array<JSX.Element> = props.tasks.map((m: TaskType) => {
-        const SetchangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-            props.changeTaskStatus(props.todolistId, m.taskId, e.currentTarget.checked)
-        }
-        const setremoveTask = () => {
-            props.removeTask(props.todolistId, m.taskId)
-        }
-        const onChangeTitleTaskItem = (title: string) => {
-            props.onChangeTitleTask(props.todolistId, m.taskId, title)
+const TodoList = memo((props: TodoPropsType) => {
+    let tasks = props.tasks
+    if (props.filter === 'Active')
+        tasks = props.tasks.filter(t => !t.isDone)
+    if (props.filter === 'Completed')
+        tasks = props.tasks.filter(t => t.isDone)
 
-        }
+
+    const changeTaskStatus = useCallback((taskId: string, newIsDone: boolean) => {
+        props.changeTaskStatus(props.todolistId, taskId, newIsDone)
+    }, [])
+    const removeTask = useCallback((taskId: string) => {
+        props.removeTask(props.todolistId, taskId)
+    }, [])
+    const onChangeTitleTask = useCallback((taskId: string, title: string) => {
+        props.onChangeTitleTask(props.todolistId, taskId, title)
+    }, [])
+    const TasksJSX: Array<JSX.Element> = tasks.map((m: TaskType) => {
 
         return (
-            <li className={'task-list'} key={m.taskId}>
-                <Checkbox onChange={SetchangeTaskStatus} checked={m.isDone}  />
-                <div className={m.isDone ? 'title-span-isDone' : ''}>
-                    <EditingSpan title={m.title} onChangeTitleItem={onChangeTitleTaskItem}/>
-
-                </div>
-                <IconButton className={'btn-task-list'} onClick={setremoveTask} aria-label="delete">
-                    <DeleteIcon/>
-                </IconButton>
-            </li>
+            <TaskWithReduax key={m.taskId} task={m} todolistId={props.todolistId}/>
+            // <Task key={m.taskId}
+            //     task={m}
+            //     changeTaskStatus={changeTaskStatus}
+            //     onChangeTitleTask={onChangeTitleTask}
+            //     removeTask={removeTask}
+            // />
         )
+
     })
-    const handlerCreator = (todolistId: string, filter: FilterText) => () => props.ChangeFilter(todolistId, filter)
+    const handlerCreator = (todolistId: string, filter: FilterText) => () => {
+        props.ChangeFilter(todolistId, filter)
+    }
     const removeTodoListHandler = () => {
         props.removeTodoList(props.todolistId)
     }
-    const AddTodoLists = (title: string) => {
+    const AddTodoLists = useCallback((title: string) => {
         props.AddTasks(props.todolistId, title)
-    }
-    const onChangeTitleTodoList = (title: string) => {
+    }, [props.AddTasks, props.todolistId])
+    const onChangeTitleTodoList = useCallback((title: string) => {
         props.onChangeTitleTodoList(props.todolistId, title)
-
-    }
+    },[props.onChangeTitleTodoList,props.todolistId])
     return (
         <div className="todolist">
             <h3 className={'title-todolist'}>
@@ -71,7 +80,7 @@ const TodoList: FC<TodoPropsType> = (props) => {
                     <DeleteIcon/>
                 </IconButton>
             </h3>
-            <AddItem AddTodoLists={AddTodoLists} todolistId={props.todolistId}/>
+            <AddItem AddTodoLists={AddTodoLists}/>
             <ul>
                 {TasksJSX}
             </ul>
@@ -88,7 +97,7 @@ const TodoList: FC<TodoPropsType> = (props) => {
             </div>
         </div>
     )
-}
+})
 export default TodoList
 
 

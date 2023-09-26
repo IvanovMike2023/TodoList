@@ -1,5 +1,6 @@
 import {AssocTaskType, TodoListType} from "../App";
 import {v1} from "uuid";
+import {AddTodoListsACType} from "./todolistsReducer";
 
 let initState:AssocTaskType={}
 export const tasksReducer = (state=initState, action: TsarType): AssocTaskType => {
@@ -24,15 +25,18 @@ export const tasksReducer = (state=initState, action: TsarType): AssocTaskType =
                 isDone: true
             }
             return {...state, [action.payload.todolistId]: [...state[action.payload.todolistId], newtask]}
-        case 'ADD-TASKID':
-            return {...state, [action.payload.id]: []}
+        case 'ADD-TODOLIST': {
+            const stateCopy = {...state};
+            stateCopy[action.payload.id] = [];
+            return stateCopy;
+        }
         case 'ONCHANGE-ITEM':
             return {...state,[action.payload.todolistId]:state[action.payload.todolistId].map(el=>el.taskId===action.payload.id ? {...el,title: action.payload.newtitle}: el )}
         default:
             return state
     }
 }
-type TsarType = removeTaskACType | changeTaskStatusACType | AddTasksACType |AddTasksIdACType | onChangeItemACType
+type TsarType = removeTaskACType | changeTaskStatusACType | AddTasksACType |AddTasksIdACType | onChangeItemACType | AddTodoListsACType
 type removeTaskACType = ReturnType<typeof removeTaskAC>
 export const removeTaskAC = (todolistId: string, Id: string) => {
     return {

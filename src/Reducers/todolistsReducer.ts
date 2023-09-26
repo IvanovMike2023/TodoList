@@ -11,8 +11,6 @@ export const todolistsReducer=(state=initState, action:TsarType):TodoListType[]=
             return [...state.map(el=>el.id===action.payload.todolistId ? {...el,title: action.payload.newtitle} : el)]
         case 'ADD-TODOLIST':
             let newtodolist:TodoListType={
-                // id:action.payload.id,
-                // title: action.payload.title,
                 ...action.payload,
                 filter: 'All'
             }
@@ -43,10 +41,10 @@ export const onChangeTitleTodoListAC=(todolistId: string, newtitle: string)=>{
         payload:{todolistId,newtitle}
     }as const
 }
-type AddTodoListsACType=ReturnType<typeof AddTodoListsAC>
-export const AddTodoListsAC=(title: string,id:string)=>{
+export type AddTodoListsACType=ReturnType<typeof AddTodoListsAC>
+export const AddTodoListsAC=(title: string)=>{
     return {
         type: 'ADD-TODOLIST',
-        payload:{title,id}
+        payload:{title,id:v1()}
     }as const
 }

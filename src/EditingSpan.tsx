@@ -1,11 +1,12 @@
-import React, {ChangeEvent, ChangeEventHandler, useState} from "react";
+import React, {ChangeEvent, ChangeEventHandler, memo, useState} from "react";
 
 type EditSpanType = {
     title: string
     onChangeTitleItem: (title:string)=>void
 
 }
-export const EditingSpan = (props: EditSpanType) => {
+export const EditingSpan = memo((props: EditSpanType) => {
+    console.log(`editing ${props.title}`)
     const [editmode,setEditmode]=useState(true)
     const [item,setItem]=useState('')
     const ShowEditMode = () => {
@@ -26,4 +27,4 @@ export const EditingSpan = (props: EditSpanType) => {
         <input onBlur={HideEditMode} value={item} onChange={onChangeHandler } autoFocus  hidden={editmode} type="text"/>
 
 
-}
+})
