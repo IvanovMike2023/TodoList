@@ -51,12 +51,7 @@ const TodoList = memo((props: TodoPropsType) => {
 
         return (
             <TaskWithReduax key={m.taskId} task={m} todolistId={props.todolistId}/>
-            // <Task key={m.taskId}
-            //     task={m}
-            //     changeTaskStatus={changeTaskStatus}
-            //     onChangeTitleTask={onChangeTitleTask}
-            //     removeTask={removeTask}
-            // />
+
         )
 
     })
